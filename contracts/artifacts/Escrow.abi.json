@@ -1,0 +1,69 @@
+{
+  "name": "Escrow",
+  "desc": "",
+  "methods": [
+    {
+      "name": "createApplication",
+      "args": [
+        {
+          "name": "asa",
+          "type": "asset",
+          "desc": ""
+        },
+        {
+          "name": "renter",
+          "type": "address",
+          "desc": ""
+        },
+        {
+          "name": "owner",
+          "type": "address",
+          "desc": ""
+        },
+        {
+          "name": "arbiter",
+          "type": "address",
+          "desc": ""
+        },
+        {
+          "name": "amount",
+          "type": "uint64",
+          "desc": ""
+        },
+        {
+          "name": "terms",
+          "type": "string",
+          "desc": ""
+        },
+        {
+          "name": "contractLength",
+          "type": "uint64",
+          "desc": ""
+        }
+      ],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "bootstrap",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "getParties",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "(address,address,address)",
+        "desc": ""
+      }
+    }
+  ]
+}
