@@ -10,7 +10,7 @@
     "compile-dao-contract": "tealscript contracts/dao.algo.ts contracts/artifacts",
     "compile-escrow-contract": "tealscript contracts/escrow.algo.ts contracts/artifacts",
     "generate-components": "algokit-generate-component contracts/artifacts/Dao.json contracts/artifacts/components",
-    "generate-escrow-components": "algokit-generate-component contracts/artifacts/Dao.json contracts/artifacts/components",
+    "generate-escrow-components": "algokit-generate-component contracts/artifacts/Escrow.json contracts/artifacts/components",
     "build": "npm run compile-escrow-contract && npm run generate-escrow-client",
     "test": "npm run build && jest",
     "lint": "eslint . --ext .ts",
