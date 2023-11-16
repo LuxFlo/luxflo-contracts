@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 import { ReactNode, useState } from 'react'
-import { Dao, DaoClient } from '../contracts/DaoClient'
+import { Escrow, EscrowClient } from '../contracts/DaoClient'
 import { useWallet } from '@txnlab/use-wallet'
 
 /* Example usage
-<DaoBootstrap
+<EscrowOwnerArbitration
   buttonClass="btn m-2"
   buttonLoadingNode={<span className="loading loading-spinner" />}
-  buttonNode="Call bootstrap"
+  buttonNode="Call ownerArbitration"
   typedClient={typedClient}
 />
 */
@@ -15,18 +15,18 @@ type Props = {
   buttonClass: string
   buttonLoadingNode?: ReactNode
   buttonNode: ReactNode
-  typedClient: DaoClient
+  typedClient: EscrowClient
 }
 
-const DaoBootstrap = (props: Props) => {
+const EscrowOwnerArbitration = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const { activeAddress, signer } = useWallet()
   const sender = { signer, addr: activeAddress! }
 
   const callMethod = async () => {
     setLoading(true)
-    console.log(`Calling bootstrap`)
-    await props.typedClient.bootstrap(
+    console.log(`Calling ownerArbitration`)
+    await props.typedClient.ownerArbitration(
       {},
       { sender },
     )
@@ -40,4 +40,4 @@ const DaoBootstrap = (props: Props) => {
   )
 }
 
-export default DaoBootstrap
+export default EscrowOwnerArbitration

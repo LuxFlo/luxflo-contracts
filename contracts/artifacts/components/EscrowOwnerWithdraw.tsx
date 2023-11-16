@@ -1,42 +1,33 @@
 /* eslint-disable no-console */
 import { ReactNode, useState } from 'react'
-import { Dao, DaoClient } from '../contracts/DaoClient'
+import { Escrow, EscrowClient } from '../contracts/DaoClient'
 import { useWallet } from '@txnlab/use-wallet'
 
 /* Example usage
-<DaoVote
+<EscrowOwnerWithdraw
   buttonClass="btn m-2"
   buttonLoadingNode={<span className="loading loading-spinner" />}
-  buttonNode="Call vote"
+  buttonNode="Call ownerWithdraw"
   typedClient={typedClient}
-  inFavor={inFavor}
-  registeredAsa={registeredAsa}
 />
 */
-type DaoVoteArgs = Dao['methods']['vote(bool,asset)void']['argsObj']
-
 type Props = {
   buttonClass: string
   buttonLoadingNode?: ReactNode
   buttonNode: ReactNode
-  typedClient: DaoClient
-  inFavor: DaoVoteArgs['inFavor']
-  registeredAsa: DaoVoteArgs['registeredAsa']
+  typedClient: EscrowClient
 }
 
-const DaoVote = (props: Props) => {
+const EscrowOwnerWithdraw = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const { activeAddress, signer } = useWallet()
   const sender = { signer, addr: activeAddress! }
 
   const callMethod = async () => {
     setLoading(true)
-    console.log(`Calling vote`)
-    await props.typedClient.vote(
-      {
-        inFavor: props.inFavor,
-        registeredAsa: props.registeredAsa,
-      },
+    console.log(`Calling ownerWithdraw`)
+    await props.typedClient.ownerWithdraw(
+      {},
       { sender },
     )
     setLoading(false)
@@ -49,4 +40,4 @@ const DaoVote = (props: Props) => {
   )
 }
 
-export default DaoVote
+export default EscrowOwnerWithdraw

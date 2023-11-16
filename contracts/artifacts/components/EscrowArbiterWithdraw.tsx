@@ -4,10 +4,10 @@ import { Escrow, EscrowClient } from '../contracts/DaoClient'
 import { useWallet } from '@txnlab/use-wallet'
 
 /* Example usage
-<EscrowBootstrap
+<EscrowArbiterWithdraw
   buttonClass="btn m-2"
   buttonLoadingNode={<span className="loading loading-spinner" />}
-  buttonNode="Call bootstrap"
+  buttonNode="Call arbiterWithdraw"
   typedClient={typedClient}
 />
 */
@@ -18,15 +18,15 @@ type Props = {
   typedClient: EscrowClient
 }
 
-const EscrowBootstrap = (props: Props) => {
+const EscrowArbiterWithdraw = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const { activeAddress, signer } = useWallet()
   const sender = { signer, addr: activeAddress! }
 
   const callMethod = async () => {
     setLoading(true)
-    console.log(`Calling bootstrap`)
-    await props.typedClient.bootstrap(
+    console.log(`Calling arbiterWithdraw`)
+    await props.typedClient.arbiterWithdraw(
       {},
       { sender },
     )
@@ -40,4 +40,4 @@ const EscrowBootstrap = (props: Props) => {
   )
 }
 
-export default EscrowBootstrap
+export default EscrowArbiterWithdraw

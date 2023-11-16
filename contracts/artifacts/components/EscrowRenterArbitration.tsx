@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 import { ReactNode, useState } from 'react'
-import { Dao, DaoClient } from '../contracts/DaoClient'
+import { Escrow, EscrowClient } from '../contracts/DaoClient'
 import { useWallet } from '@txnlab/use-wallet'
 
 /* Example usage
-<DaoGetProposal
+<EscrowRenterArbitration
   buttonClass="btn m-2"
   buttonLoadingNode={<span className="loading loading-spinner" />}
-  buttonNode="Call getProposal"
+  buttonNode="Call renterArbitration"
   typedClient={typedClient}
 />
 */
@@ -15,18 +15,18 @@ type Props = {
   buttonClass: string
   buttonLoadingNode?: ReactNode
   buttonNode: ReactNode
-  typedClient: DaoClient
+  typedClient: EscrowClient
 }
 
-const DaoGetProposal = (props: Props) => {
+const EscrowRenterArbitration = (props: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
   const { activeAddress, signer } = useWallet()
   const sender = { signer, addr: activeAddress! }
 
   const callMethod = async () => {
     setLoading(true)
-    console.log(`Calling getProposal`)
-    await props.typedClient.getProposal(
+    console.log(`Calling renterArbitration`)
+    await props.typedClient.renterArbitration(
       {},
       { sender },
     )
@@ -40,4 +40,4 @@ const DaoGetProposal = (props: Props) => {
   )
 }
 
-export default DaoGetProposal
+export default EscrowRenterArbitration
