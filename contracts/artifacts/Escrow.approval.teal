@@ -124,42 +124,7 @@ createApplication:
 	app_global_put
 	retsub
 
-// bootstrap()void
-//
-// // mint DAO token
-abi_route_bootstrap:
-	// execute bootstrap()void
-	callsub bootstrap
-	int 1
-	return
-
-bootstrap:
-	proto 0 0
-
-	// contracts/escrow.algo.ts:37
-	// verifyTxn(this.txn, { sender: this.app.creator })
-	// verify sender
-	txn Sender
-	txna Applications 0
-	app_params_get AppCreator
-	assert
-	==
-	assert
-
-	// contracts/escrow.algo.ts:38
-	// assert(!this.asa.exists)
-	txna Applications 0
-	byte 0x617361 // "asa"
-	app_global_get_ex
-	swap
-	pop
-	!
-	assert
-	retsub
-
 // getParties()(address,address,address)
-//
-// //   }
 abi_route_getParties:
 	// execute getParties()(address,address,address)
 	callsub getParties
@@ -169,7 +134,7 @@ abi_route_getParties:
 getParties:
 	proto 0 0
 
-	// contracts/escrow.algo.ts:107
+	// contracts/escrow.algo.ts:32
 	// return [this.renter.value, this.owner.value, this.arbiter.value];
 	byte 0x72656e746572 // "renter"
 	app_global_get
@@ -185,6 +150,186 @@ getParties:
 	log
 	retsub
 
+// renterArbitration()void
+abi_route_renterArbitration:
+	// execute renterArbitration()void
+	callsub renterArbitration
+	int 1
+	return
+
+renterArbitration:
+	proto 0 0
+
+	// contracts/escrow.algo.ts:36
+	// assert(globals.latestTimestamp <= this.expiresTime.value)
+	global LatestTimestamp
+	byte 0x6578706972657354696d65 // "expiresTime"
+	app_global_get
+	<=
+	assert
+
+	// contracts/escrow.algo.ts:37
+	// verifyTxn(this.txn, { sender: this.renter.value })
+	// verify sender
+	txn Sender
+	byte 0x72656e746572 // "renter"
+	app_global_get
+	==
+	assert
+
+	// contracts/escrow.algo.ts:38
+	// this.arbitration.value = 1
+	byte 0x6172626974726174696f6e // "arbitration"
+	int 1
+	app_global_put
+	retsub
+
+// ownerArbitration()void
+abi_route_ownerArbitration:
+	// execute ownerArbitration()void
+	callsub ownerArbitration
+	int 1
+	return
+
+ownerArbitration:
+	proto 0 0
+
+	// contracts/escrow.algo.ts:42
+	// assert(globals.latestTimestamp <= this.expiresTime.value)
+	global LatestTimestamp
+	byte 0x6578706972657354696d65 // "expiresTime"
+	app_global_get
+	<=
+	assert
+
+	// contracts/escrow.algo.ts:43
+	// verifyTxn(this.txn, { sender: this.owner.value })
+	// verify sender
+	txn Sender
+	byte 0x6f776e6572 // "owner"
+	app_global_get
+	==
+	assert
+
+	// contracts/escrow.algo.ts:44
+	// this.arbitration.value = 1
+	byte 0x6172626974726174696f6e // "arbitration"
+	int 1
+	app_global_put
+	retsub
+
+// ownerWithdraw()void
+abi_route_ownerWithdraw:
+	// execute ownerWithdraw()void
+	callsub ownerWithdraw
+	int 1
+	return
+
+ownerWithdraw:
+	proto 0 0
+
+	// contracts/escrow.algo.ts:48
+	// assert(globals.latestTimestamp > this.expiresTime.value)
+	global LatestTimestamp
+	byte 0x6578706972657354696d65 // "expiresTime"
+	app_global_get
+	>
+	assert
+
+	// contracts/escrow.algo.ts:49
+	// assert(this.arbitration.value === 0)
+	byte 0x6172626974726174696f6e // "arbitration"
+	app_global_get
+	int 0
+	==
+	assert
+
+	// contracts/escrow.algo.ts:51
+	// sendPayment({
+	//       amount: this.app.address.balance,
+	//       receiver: this.owner.value,
+	//     })
+	itxn_begin
+	int pay
+	itxn_field TypeEnum
+
+	// contracts/escrow.algo.ts:52
+	// amount: this.app.address.balance
+	global CurrentApplicationAddress
+	acct_params_get AcctBalance
+	assert
+	itxn_field Amount
+
+	// contracts/escrow.algo.ts:53
+	// receiver: this.owner.value
+	byte 0x6f776e6572 // "owner"
+	app_global_get
+	itxn_field Receiver
+
+	// Fee field not set, defaulting to 0
+	int 0
+	itxn_field Fee
+
+	// Submit inner transaction
+	itxn_submit
+	retsub
+
+// arbiterWithdraw()void
+abi_route_arbiterWithdraw:
+	// execute arbiterWithdraw()void
+	callsub arbiterWithdraw
+	int 1
+	return
+
+arbiterWithdraw:
+	proto 0 0
+
+	// contracts/escrow.algo.ts:58
+	// assert(globals.latestTimestamp > this.expiresTime.value)
+	global LatestTimestamp
+	byte 0x6578706972657354696d65 // "expiresTime"
+	app_global_get
+	>
+	assert
+
+	// contracts/escrow.algo.ts:59
+	// assert(this.arbitration.value === 1)
+	byte 0x6172626974726174696f6e // "arbitration"
+	app_global_get
+	int 1
+	==
+	assert
+
+	// contracts/escrow.algo.ts:61
+	// sendPayment({
+	//       amount: this.app.address.balance,
+	//       receiver: this.arbiter.value,
+	//     })
+	itxn_begin
+	int pay
+	itxn_field TypeEnum
+
+	// contracts/escrow.algo.ts:62
+	// amount: this.app.address.balance
+	global CurrentApplicationAddress
+	acct_params_get AcctBalance
+	assert
+	itxn_field Amount
+
+	// contracts/escrow.algo.ts:63
+	// receiver: this.arbiter.value
+	byte 0x61726269746572 // "arbiter"
+	app_global_get
+	itxn_field Receiver
+
+	// Fee field not set, defaulting to 0
+	int 0
+	itxn_field Fee
+
+	// Submit inner transaction
+	itxn_submit
+	retsub
+
 create_NoOp:
 	method "createApplication(asset,address,address,address,uint64,string,uint64)void"
 	txna ApplicationArgs 0
@@ -192,8 +337,11 @@ create_NoOp:
 	err
 
 call_NoOp:
-	method "bootstrap()void"
 	method "getParties()(address,address,address)"
+	method "renterArbitration()void"
+	method "ownerArbitration()void"
+	method "ownerWithdraw()void"
+	method "arbiterWithdraw()void"
 	txna ApplicationArgs 0
-	match abi_route_bootstrap abi_route_getParties
+	match abi_route_getParties abi_route_renterArbitration abi_route_ownerArbitration abi_route_ownerWithdraw abi_route_arbiterWithdraw
 	err

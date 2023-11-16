@@ -48,7 +48,16 @@
       }
     },
     {
-      "name": "bootstrap",
+      "name": "getParties",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "(address,address,address)",
+        "desc": ""
+      }
+    },
+    {
+      "name": "renterArbitration",
       "args": [],
       "desc": "",
       "returns": {
@@ -57,11 +66,29 @@
       }
     },
     {
-      "name": "getParties",
+      "name": "ownerArbitration",
       "args": [],
       "desc": "",
       "returns": {
-        "type": "(address,address,address)",
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "ownerWithdraw",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "void",
+        "desc": ""
+      }
+    },
+    {
+      "name": "arbiterWithdraw",
+      "args": [],
+      "desc": "",
+      "returns": {
+        "type": "void",
         "desc": ""
       }
     }
